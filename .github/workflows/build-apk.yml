@@ -1,0 +1,39 @@
+name: Crea APK Vibra
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Scarica progetto
+        uses: actions/checkout@v4
+
+      - name: Estrai progetto
+        run: unzip -q Vibra-Android-V1-source.zip
+
+      - name: Configura Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Configura Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.10.2"
+
+      - name: Crea APK
+        working-directory: VibraAndroid
+        run: gradle :app:assembleDebug --stacktrace
+
+      - name: Salva APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vibra-Android
+          path: VibraAndroid/app/build/outputs/apk/debug/app-debug.apk

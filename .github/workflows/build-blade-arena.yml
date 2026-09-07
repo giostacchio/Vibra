@@ -29,7 +29,7 @@ jobs:
           gradle-version: "8.10.2"
 
       - name: Extract Blade Arena
-        run: unzip -q BladeArena-Android-V0.1-source.zip
+        run: unzip -q BladeArena-Android-V0.2-source.zip
 
       - name: Build debug APK
         working-directory: BladeArenaAndroid
@@ -38,6 +38,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Blade-Arena-Android-V0.1
+          name: Blade-Arena-Android-V0.2
           path: BladeArenaAndroid/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error

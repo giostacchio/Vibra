@@ -1,4 +1,4 @@
-name: Build Blade Arena APK
+name: Build Blade Arena HD APK
 
 on:
   push:
@@ -12,32 +12,26 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.10.2"
-
-      - name: Extract Blade Arena
-        run: unzip -q BladeArena-Android-V0.2-source.zip
-
+      - name: Extract Blade Arena HD
+        run: unzip -q BladeArena-HD-V1.0-source.zip
       - name: Build debug APK
-        working-directory: BladeArenaAndroid
+        working-directory: BladeArenaHD
         run: gradle :app:assembleDebug --stacktrace
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Blade-Arena-Android-V0.2
-          path: BladeArenaAndroid/app/build/outputs/apk/debug/app-debug.apk
+          name: Blade-Arena-HD-V1.0
+          path: BladeArenaHD/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error

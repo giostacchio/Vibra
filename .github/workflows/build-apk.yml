@@ -23,6 +23,9 @@ jobs:
       - name: Abilita importazione di playlist temporanee
         run: python3 patches/enable_temporary_playlist_import.py
 
+      - name: Elimina vecchi video pubblicitari gia sostituiti
+        run: python3 patches/purge_legacy_music_videos.py
+
       - name: Configura Java
         uses: actions/setup-java@v4
         with:

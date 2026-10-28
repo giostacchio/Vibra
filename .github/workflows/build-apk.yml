@@ -17,6 +17,9 @@ jobs:
       - name: Estrai progetto
         run: unzip -q Vibra-Android-V1-source.zip
 
+      - name: Supporto playlist temporanee YouTube (15 brani Battisti-Mina)
+        run: python3 scripts/patch_vibra_import.py
+
       - name: Configura Java
         uses: actions/setup-java@v4
         with:

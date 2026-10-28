@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,6 +22,9 @@ jobs:
 
       - name: Supporto playlist temporanee YouTube (15 brani Battisti-Mina)
         run: python3 scripts/patch_vibra_import.py
+
+      - name: Abilita importazione di playlist temporanee
+        run: python3 patches/enable_temporary_playlist_import.py
 
       - name: Configura Java
         uses: actions/setup-java@v4
@@ -35,8 +41,18 @@ jobs:
         working-directory: VibraAndroid
         run: gradle :app:assembleDebug --stacktrace
 
+      - name: Prepara APK Vibra Playlist
+        run: cp VibraAndroid/app/build/outputs/apk/debug/app-debug.apk Vibra-Playlist-15.apk
+
+      - name: Pubblica APK scaricabile
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view vibra-playlist-15 >/dev/null 2>&1 || gh release create vibra-playlist-15 --title "Vibra - Playlist Battisti Mina" --notes "Vibra Android con supporto ai link watch_videos?video_ids= e alle playlist YouTube tradizionali."
+          gh release upload vibra-playlist-15 Vibra-Playlist-15.apk --clobber
+
       - name: Salva APK
         uses: actions/upload-artifact@v4
         with:
           name: Vibra-Android
-          path: VibraAndroid/app/build/outputs/apk/debug/app-debug.apk
+          path: Vibra-Playlist-15.apk
